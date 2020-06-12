@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "190127625261",
+    "firebase_url": "https://metting-febba.firebaseio.com",
+    "project_id": "metting-febba",
+    "storage_bucket": "metting-febba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190127625261:android:59d53bcb689c1a8cf094a4",
+        "android_client_info": {
+          "package_name": "com.example.meeting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190127625261-atoc02bi99kaklom9bkdsoforhrpii38.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLA-CqVOKfawqamOKa5pvCW6cVAbgCorw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190127625261-atoc02bi99kaklom9bkdsoforhrpii38.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
