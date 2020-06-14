@@ -1,5 +1,6 @@
 package com.example.meeting.view.signup;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -17,12 +18,6 @@ public class SignupActivity extends BaseActivity<SignPresenter> implements SignC
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    @Override
-    public Context getContext() {
-        return this;
-    }
-
     @Override
     public void showLoading(boolean is) {
 
@@ -41,5 +36,10 @@ public class SignupActivity extends BaseActivity<SignPresenter> implements SignC
     @Override
     public void removeKeyboard() {
         hideKeyboard();
+    }
+
+    @Override
+    public Activity getActivity() {
+        return this;
     }
 }
