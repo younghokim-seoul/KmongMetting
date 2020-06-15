@@ -4,19 +4,14 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.example.meeting.L;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import io.reactivex.disposables.CompositeDisposable;
 
 public class LoginPresenter implements LoginContract.LoginPresenter {
 
@@ -27,7 +22,6 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
 
 
     public LoginPresenter(LoginContract.View view) {
-        L.i("[LoginPresenter init]");
         this.mView = view;
         this.mContext = view.getContext();
     }
@@ -59,11 +53,14 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
     }
 
 
-
     @Override
     public void init() {
         auth = FirebaseAuth.getInstance();
         userDatabaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
+        if (auth.getCurrentUser() != null) {
+            mView.openMainActivity();
+        }
     }
 
 }

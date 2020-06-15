@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="position">
+        <item>직책</item>
+        <item>부장</item>
+        <item>차장</item>
+        <item>사원</item>
+    </string-array>
+</resources>

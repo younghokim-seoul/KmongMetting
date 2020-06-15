@@ -10,7 +10,6 @@ import lombok.ToString;
 @Builder
 @Setter
 @Getter
-@NoArgsConstructor
 @ToString
 public class Account {
     private String email;

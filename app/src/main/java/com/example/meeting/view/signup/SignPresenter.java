@@ -1,35 +1,33 @@
 package com.example.meeting.view.signup;
 
-import android.content.Context;
-
-import androidx.annotation.NonNull;
-
+import com.example.meeting.AppContainer;
 import com.example.meeting.L;
-import com.example.meeting.R;
+import com.example.meeting.data.AppDataManger;
 import com.example.meeting.model.Account;
-import com.example.meeting.utils.MessageUtils;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class SignPresenter implements SignContract.SingupPresenter {
 
     private SignContract.View mView;
-    private Context mContext;
     private FirebaseAuth auth;
     private DatabaseReference userDatabaseReference;
+    private CompositeDisposable compositeDisposable;
+    private AppDataManger appDataManager;
 
 
-    public SignPresenter(SignContract.View view) {
-        L.i("[LoginPresenter init]");
+    public SignPresenter(SignContract.View view,
+                         CompositeDisposable compositeDisposable,
+                         AppContainer appContainer) {
         this.mView = view;
+        this.compositeDisposable = compositeDisposable;
+        this.appDataManager = appContainer.appDataManger;
     }
 
 
@@ -66,31 +64,50 @@ public class SignPresenter implements SignContract.SingupPresenter {
             } else {
                 onError();
             }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                onError();
-
-            }
-        });
+        }).addOnFailureListener(e -> onError());
     }
 
     private void registerSuccess(FirebaseUser firebaseUser, Account account) {
         userDatabaseReference
                 .child(firebaseUser.getUid())
                 .setValue(account)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        mView.showLoading(false);
+                        cacheTransactions(firebaseUser.getUid(), account);
                     }
                 });
+    }
+
+    private void cacheTransactions(String uid, Account account) {
+
+
+        //내장 db에 유저정보 insert
+        com.example.meeting.data.model.Account cacheUser = new com.example.meeting.data.model.Account();
+        cacheUser.uid = uid;
+        cacheUser.age = account.getAge();
+        cacheUser.email = account.getEmail();
+        cacheUser.name = account.getName();
+        cacheUser.rank = account.getPosition();
+        cacheUser.token = "";
+
+
+        compositeDisposable.add(appDataManager.insertUser(cacheUser)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    mView.showMessage("회원가입이 완료 되었습니다.");
+                    mView.onSuccess();
+                }, error -> {
+                    L.e("::[Insert Error] " + error.getMessage());
+                    mView.showMessage(error.getMessage());
+                }));
     }
 
 
     private void onError() {
         mView.showLoading(false);
-        MessageUtils.showLongToastMsg(mContext, "다시 시도해주세요.");
+        mView.showMessage("다시 시도해주세요.");
     }
 
 

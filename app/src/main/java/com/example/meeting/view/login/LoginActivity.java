@@ -11,11 +11,13 @@ import android.widget.EditText;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 
+import com.example.meeting.MainActivity;
 import com.example.meeting.R;
 import com.example.meeting.utils.MessageUtils;
 import com.example.meeting.view.base.BaseActivity;
 import com.example.meeting.view.signup.SignupActivity;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.tedpark.tedonactivityresult.rx2.TedRxOnActivityResult;
 
 import butterknife.BindView;
@@ -46,7 +48,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         //뷰와 xml을 연동시킨후 presenter로 db초기화를 시킨다.
         setUnBinder(ButterKnife.bind(this));
         presenter.init();
@@ -55,6 +56,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void openMainActivity() {
         //로그인성공시 mainActivity로
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
         finish();
     }
 
@@ -124,7 +126,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 .startActivityForResult(new Intent(this, SignupActivity.class))
                 .subscribe(activityResult -> {
                             if (activityResult.getResultCode() == Activity.RESULT_OK) {
-
+                                FirebaseAuth.getInstance().signOut();
                             }
                         }, error -> {
 
