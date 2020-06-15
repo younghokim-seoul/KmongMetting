@@ -1,24 +1,22 @@
 package com.example.meeting.model;
 
+import java.io.Serializable;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Builder
+
 @Setter
 @Getter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
-public class Account {
-    private String email;
-    private String password;
-    private String token;
+public class Scheduler implements Serializable {
     private String name;
-    private String age;
-    private String position;
+    private String subkey;
+    private String rootKey;
+    private long expireTimeMils;
+
 }

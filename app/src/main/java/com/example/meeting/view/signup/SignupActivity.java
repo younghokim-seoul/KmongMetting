@@ -64,7 +64,7 @@ public class SignupActivity extends BaseActivity<SignPresenter> implements SignC
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) positionSpinner.getSelectedItem();
-                L.e("select year = " + item);
+                selectedBusinessRank = item;
             }
 
             @Override
@@ -130,7 +130,7 @@ public class SignupActivity extends BaseActivity<SignPresenter> implements SignC
 
 
         //id와 비밀번호를 가져온다.
-        Account account = Account.builder().name(name).email(id).password(pw).age(age).position(selectedBusinessRank).build();
+        Account account = Account.builder().name(name).email(id).password(pw).age(age).position(selectedBusinessRank).token("").build();
         //로그인시도
         presenter.onSingUpClick(account);
     }

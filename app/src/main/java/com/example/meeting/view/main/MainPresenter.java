@@ -1,5 +1,18 @@
 package com.example.meeting.view.main;
 
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.CalendarContract;
+import android.util.Log;
+
+import androidx.appcompat.view.menu.MenuView;
+import androidx.core.app.ActivityCompat;
+
 import com.example.meeting.AppContainer;
 import com.example.meeting.L;
 import com.example.meeting.data.AppDataManger;
@@ -8,6 +21,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -20,7 +37,6 @@ public class MainPresenter implements MainContract.MainPresenter {
     private DatabaseReference calendarDatabaseReference;
     private CompositeDisposable compositeDisposable;
     private AppDataManger appDataManager;
-
 
     public MainPresenter(MainContract.View view,
                          CompositeDisposable compositeDisposable,
@@ -50,18 +66,23 @@ public class MainPresenter implements MainContract.MainPresenter {
                 .subscribe(result -> {
                     L.i("[getUser] Success");
                     if (result != null) {
+                        L.i(":::call getUser " + result.toString());
                         mView.setUserName(result.name);
                     }
                 }, error -> {
-                    L.e("[getUser] Fail");
+                    L.e("[getUser] Fail " + error.getMessage());
                     mView.setUserName("");
                 }));
+    }
+
+    @Override
+    public void setTimeSetting(Calendar cal) {
+        mView.showTimeDialog();
     }
 
     private void onError() {
         mView.showLoading(false);
         mView.showMessage("다시 시도해주세요.");
     }
-
 
 }

@@ -38,7 +38,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     protected LoginPresenter getPresenter() {
         //로그인을 db에서 체크하기위한 presenter 부분을 이관시킨다.
-        return new LoginPresenter(this);
+        return new LoginPresenter(this,getCompositeDisposable(), appContainer);
     }
 
 

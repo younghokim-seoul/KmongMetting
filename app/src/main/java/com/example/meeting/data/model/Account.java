@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import lombok.ToString;
+
 @Entity(tableName = "accounts")
+@ToString
 public class Account {
 
     @PrimaryKey

@@ -3,12 +3,17 @@ package com.example.meeting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.applandeo.materialcalendarview.CalendarView;
+import com.example.meeting.data.model.Alarm;
+import com.example.meeting.model.Scheduler;
 import com.example.meeting.utils.MessageUtils;
 import com.example.meeting.view.base.BaseActivity;
+import com.example.meeting.view.dialog.TodoDialog;
 import com.example.meeting.view.main.MainContract;
 import com.example.meeting.view.main.MainPresenter;
 import com.example.meeting.view.signup.SignPresenter;
@@ -25,6 +30,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @BindView(R.id.loading)
     SpinKitView loading;
 
+
+    @BindView(R.id.caneldarView)
+    CalendarView mCalendar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +42,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
         presenter.init();
 
+
+        mCalendar.setOnDayClickListener(eventDay -> {
+            presenter.setTimeSetting(eventDay.getCalendar());
+        });
     }
 
     @Override
@@ -47,7 +60,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     @Override
     public void setUserName(String name) {
-        tvUser.setText(name +"님");
+        tvUser.setText(name + "님");
+    }
+
+    @Override
+    public void showTimeDialog() {
+        new TodoDialog(MainActivity.this).setDialogButtonClickListener(new TodoDialog.OnClickListener() {
+            @Override
+            public void onDeny(View view, AlertDialog dialog) {
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onSubmit(View view, AlertDialog dialog, Alarm alarm, Scheduler scheduler) {
+
+            }
+        }).show();
     }
 
     @Override
