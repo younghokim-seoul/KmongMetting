@@ -20,8 +20,8 @@ public interface AlarmDao {
     @Query("SELECT * FROM alarms")
     List<Alarm> loadAll();
 
-    @Query("DELETE FROM alarms WHERE id = :id")
-    Completable delete(Long id);
+    @Query("DELETE FROM alarms")
+    Completable delete();
 
 
 }

@@ -5,8 +5,8 @@ import android.util.Log;
 
 public class L {
     private static final String ct = System.getProperty("line.separator");
-    private static String TAG = "YLogger";
-    public static boolean LOG_ENABLED = true;
+    private static String TAG = "young_";
+    public static boolean LOG_ENABLED = false;
     private static boolean cu = false;
     public static final int VERBOSE = 1;
     public static final int DEBUG = 2;

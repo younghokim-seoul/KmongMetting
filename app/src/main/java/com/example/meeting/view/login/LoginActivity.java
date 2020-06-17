@@ -38,7 +38,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     protected LoginPresenter getPresenter() {
         //로그인을 db에서 체크하기위한 presenter 부분을 이관시킨다.
-        return new LoginPresenter(this,getCompositeDisposable(), appContainer);
+        return new LoginPresenter(this, getCompositeDisposable(), appContainer);
     }
 
 
@@ -127,6 +127,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 .subscribe(activityResult -> {
                             if (activityResult.getResultCode() == Activity.RESULT_OK) {
                                 FirebaseAuth.getInstance().signOut();
+
+                                if (activityResult.getData() != null) {
+                                    String email = activityResult.getData().getStringExtra("EXTRA_EMAIL");
+                                    etId.setText(email);
+                                }
                             }
                         }, error -> {
 

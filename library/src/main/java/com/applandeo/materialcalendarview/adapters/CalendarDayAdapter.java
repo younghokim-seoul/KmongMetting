@@ -1,6 +1,7 @@
 package com.applandeo.materialcalendarview.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,18 +139,9 @@ class CalendarDayAdapter extends ArrayAdapter<Date> {
         Stream.of(mCalendarProperties.getEventDays()).filter(eventDate ->
                 eventDate.getCalendar().equals(day)).findFirst().executeIfPresent(eventDay -> {
 
-//            ImageUtils.loadImage(dayIcon, eventDay.getImageDrawable());
-//            tvReserve.setText(eventDay.isSetScheduler() ? eventDay.getTitle() : "");
 
-            L.i("::::eventDay.isSetScheduler() : " + eventDay.isSetScheduler());
-            dayIcon.setVisibility(eventDay.isSetScheduler() ? View.VISIBLE : View.GONE);
-
-            dayIcon.setOnClickListener(view -> {
-                if (eventDay.isSetScheduler()) {
-                    mCalendarProperties.getOnExpireClickListener().onClick(eventDay);
-                }
-            });
-
+            tvReserve.setText(eventDay.isSetScheduler() ? eventDay.getTitle() : "");
+            tvReserve.setTextColor(eventDay.isCommon() ? Color.parseColor("#FF0000") : Color.parseColor("#7e7e7e"));
             // If a day doesn't belong to current month then image is transparent
             if (!isCurrentMonthDay(day) || !isActiveDay(day)) {
                 dayIcon.setAlpha(0.12f);

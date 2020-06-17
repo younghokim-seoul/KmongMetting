@@ -16,6 +16,8 @@ public class Alarm {
 
     public String title;
 
+    public String todo;
+
     @ColumnInfo(name = "push_at")
     public String pushAt;
 

@@ -3,8 +3,10 @@ package com.applandeo.materialcalendarview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+
 import androidx.annotation.ColorRes;
 import androidx.viewpager.widget.ViewPager;
+
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageButton;
@@ -69,6 +71,7 @@ public class CalendarView extends LinearLayout {
     private CalendarViewPager mViewPager;
 
     private CalendarProperties mCalendarProperties;
+    private onCalendarPageSelected mOnCalendarPageSelected;
 
     public CalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -253,15 +256,17 @@ public class CalendarView extends LinearLayout {
 
     private void initUiElements() {
         mForwardButton = (ImageButton) findViewById(R.id.forwardButton);
-        mForwardButton.setOnClickListener(onNextClickListener);
+//        mForwardButton.setOnClickListener(onNextClickListener);
 
         mPreviousButton = (ImageButton) findViewById(R.id.previousButton);
-        mPreviousButton.setOnClickListener(onPreviousClickListener);
+//        mPreviousButton.setOnClickListener(onPreviousClickListener);
 
         mCurrentMonthLabel = (TextView) findViewById(R.id.currentDateLabel);
 
         mViewPager = (CalendarViewPager) findViewById(R.id.calendarViewPager);
     }
+
+
 
     private void initCalendar() {
         mCalendarPageAdapter = new CalendarPageAdapter(mContext, mCalendarProperties);
@@ -290,14 +295,18 @@ public class CalendarView extends LinearLayout {
     }
 
     private OnChangedDateListener onChangeDateListener;
+
     public void setOnPagedChangedListener(OnChangedDateListener onChangedDateListener) {
         this.onChangeDateListener = onChangedDateListener;
     }
 
-    public interface OnChangedDateListener{
+    public interface OnChangedDateListener {
         void onPrev();
+
         void onNext();
-    };
+    }
+
+    ;
 
     public void setOnForwardPageChangeListener(OnCalendarPageChangeListener listener) {
         mCalendarProperties.setOnForwardPageChangeListener(listener);
@@ -306,14 +315,14 @@ public class CalendarView extends LinearLayout {
     private final OnClickListener onNextClickListener =
             v -> {
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() + 1);
-                L.e("onChangeDateListener = "+onChangeDateListener);
+                L.e("onChangeDateListener = " + onChangeDateListener);
                 this.onChangeDateListener.onNext();
             };
 
     private final OnClickListener onPreviousClickListener =
             v -> {
                 mViewPager.setCurrentItem(mViewPager.getCurrentItem() - 1);
-                L.e("onChangeDateListener = "+onChangeDateListener);
+                L.e("onChangeDateListener = " + onChangeDateListener);
                 this.onChangeDateListener.onPrev();
             };
 
@@ -330,9 +339,14 @@ public class CalendarView extends LinearLayout {
          */
         @Override
         public void onPageSelected(int position) {
-            L.i("::::::::::::::::::::::: position = "+ position);
+//            L.i("::::::::::::::::::::::: position = " + position);
             Calendar calendar = (Calendar) mCalendarProperties.getFirstPageCalendarDate().clone();
             calendar.add(Calendar.MONTH, position);
+
+//            L.i(":::::calendar year : " + calendar.get(Calendar.YEAR));
+//            L.i(":::::calendar month : " + calendar.get(Calendar.MONTH));
+
+            if (mOnCalendarPageSelected != null) mOnCalendarPageSelected.onChangeMonth(calendar);
 
             if (!isScrollingLimited(calendar, position)) {
                 setHeaderName(calendar, position);
@@ -384,7 +398,7 @@ public class CalendarView extends LinearLayout {
         mCalendarProperties.setOnDayClickListener(onDayClickListener);
     }
 
-    public void setOnExPireClickListener(OnExpireClickListener onExPireClickListener){
+    public void setOnExPireClickListener(OnExpireClickListener onExPireClickListener) {
         mCalendarProperties.setOnExpireClickListener(onExPireClickListener);
     }
 
@@ -428,7 +442,6 @@ public class CalendarView extends LinearLayout {
      * @see EventDay
      */
     public void setEvents(List<EventDay> eventDays) {
-        L.initialize("carmon",false);
         if (mCalendarProperties.getEventsEnabled()) {
             mCalendarProperties.setEventDays(eventDays);
             mCalendarPageAdapter.notifyDataSetChanged();
@@ -512,5 +525,13 @@ public class CalendarView extends LinearLayout {
     public void setSwipeEnabled(boolean swipeEnabled) {
         mCalendarProperties.setSwipeEnabled(swipeEnabled);
         mViewPager.setSwipeEnabled(mCalendarProperties.getSwipeEnabled());
+    }
+
+    public void setOnCalendarPageSelected(onCalendarPageSelected onCalendarPageSelected) {
+        this.mOnCalendarPageSelected = onCalendarPageSelected;
+    }
+
+    public interface onCalendarPageSelected {
+        void onChangeMonth(Calendar calendar);
     }
 }

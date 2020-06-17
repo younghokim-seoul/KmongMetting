@@ -1,6 +1,7 @@
 package com.example.meeting.view.signup;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -101,8 +102,10 @@ public class SignupActivity extends BaseActivity<SignPresenter> implements SignC
     }
 
     @Override
-    public void onSuccess() {
-        setResult(RESULT_OK);
+    public void onSuccess(String email) {
+        Intent intent = getIntent();
+        intent.putExtra("EXTRA_EMAIL", email);
+        setResult(RESULT_OK, intent);
         finish();
     }
 
@@ -125,7 +128,7 @@ public class SignupActivity extends BaseActivity<SignPresenter> implements SignC
 
         String id = etId.getText().toString();
         String pw = etPw.getText().toString();
-        String name = etAge.getText().toString();
+        String name = etName.getText().toString();
         String age = etAge.getText().toString();
 
 

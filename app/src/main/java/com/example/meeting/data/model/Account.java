@@ -24,4 +24,6 @@ public class Account {
     public String age;
 
     public String rank;
+
+    public String password;
 }

@@ -15,6 +15,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:paddingTop="10dp"
+            android:textColor="#111"
+            android:textStyle="bold"
+            android:textSize="25dp" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="15dp"
+            android:textColorHint="@color/gray">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_title"
+                style="@style/TextStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/input_border_bottom"
+                android:cursorVisible="true"
+                android:gravity="center_vertical"
+                android:hint="제목"
+                android:inputType="text"
+                android:maxLength="50"
+                android:textColor="@color/black_effective"
+                android:textSize="18sp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,12 +61,12 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_todo"
                 style="@style/TextStyle"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/input_border_bottom"
                 android:cursorVisible="true"
-                android:gravity="center_horizontal|center_vertical"
+                android:gravity="center_vertical"
                 android:hint="할일"
                 android:inputType="text"
                 android:maxLength="50"
@@ -39,13 +75,14 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <RelativeLayout
             android:id="@+id/view_start_date_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
             android:background="@drawable/input_border_bottom"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
@@ -71,8 +108,38 @@
 
         </RelativeLayout>
 
+
         <RelativeLayout
-            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="15dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:text="전체 일정 등록"
+                android:textColor="#111"
+                android:textSize="16dp" />
+
+            <CheckBox
+                android:id="@+id/cb_commom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/view_end_date_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -81,6 +148,7 @@
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:textColorHint="@color/gray"
+            android:visibility="gone"
             app:hintAnimationEnabled="false">
 
             <TextView

@@ -11,4 +11,8 @@
     <color name="black_effective">#2a2a2a</color>
     <color name="shadow">#d0d8dc</color>
     <color name="color_white">#ffffff</color>
+
+    <color name="transparent">#00000000</color>
+    <color name="press_color">#F6F6F6</color>
+    <color name="disable">#4DC52A28</color>
 </resources>

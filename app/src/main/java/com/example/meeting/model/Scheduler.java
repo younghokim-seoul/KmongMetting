@@ -14,9 +14,11 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class Scheduler implements Serializable {
-    private String name;
+    private String todo;
     private String subkey;
     private String rootKey;
+    private String title;
     private long expireTimeMils;
+    private boolean isCommon;
 
 }

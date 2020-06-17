@@ -1,10 +1,15 @@
 package com.example.meeting.view.signup;
 
+import androidx.annotation.NonNull;
+
 import com.example.meeting.AppContainer;
 import com.example.meeting.L;
 import com.example.meeting.data.AppDataManger;
 import com.example.meeting.model.Account;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,7 +58,11 @@ public class SignPresenter implements SignContract.SingupPresenter {
                 }
             }
         }).addOnFailureListener(e -> {
-            onError();
+            L.i("::::e : "  + e);
+            mView.showLoading(false);
+            if(e instanceof FirebaseAuthInvalidCredentialsException){
+                mView.showMessage("이메일 양식이 아닙니다. 이메일 양식을 지켜주세요.");
+            }
         });
     }
 
@@ -64,7 +73,13 @@ public class SignPresenter implements SignContract.SingupPresenter {
             } else {
                 onError();
             }
-        }).addOnFailureListener(e -> onError());
+        }).addOnFailureListener(e -> {
+            mView.showLoading(false);
+            if(e instanceof FirebaseAuthWeakPasswordException){
+                mView.showMessage("비밀번호는 최소 6글자 입력해주세요.");
+            }
+
+        });
     }
 
     private void registerSuccess(FirebaseUser firebaseUser, Account account) {
@@ -89,6 +104,7 @@ public class SignPresenter implements SignContract.SingupPresenter {
         cacheUser.email = account.getEmail();
         cacheUser.name = account.getName();
         cacheUser.rank = account.getPosition();
+        cacheUser.password = account.getPassword();
         cacheUser.token = "";
 
 
@@ -97,7 +113,7 @@ public class SignPresenter implements SignContract.SingupPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     mView.showMessage("회원가입이 완료 되었습니다.");
-                    mView.onSuccess();
+                    mView.onSuccess(account.getEmail());
                 }, error -> {
                     L.e("::[Insert Error] " + error.getMessage());
                     mView.showMessage(error.getMessage());

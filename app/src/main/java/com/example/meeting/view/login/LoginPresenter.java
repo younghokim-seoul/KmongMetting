@@ -62,7 +62,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
                                     if (dataSnapshot.exists()) {
                                         Account user = dataSnapshot.getValue(Account.class);
                                         if (user != null) {
-                                            cahceTransation(task.getResult().getUser(),user);
+                                            cahceTransation(task.getResult().getUser(), user);
                                         }
 
                                     } else {
@@ -107,6 +107,7 @@ public class LoginPresenter implements LoginContract.LoginPresenter {
         cacheUser.email = account.getEmail();
         cacheUser.name = account.getName();
         cacheUser.rank = account.getPosition();
+        cacheUser.password = account.getPassword();
         cacheUser.token = "";
 
 

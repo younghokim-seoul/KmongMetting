@@ -2,6 +2,8 @@ package com.example.meeting.data;
 
 import com.example.meeting.data.model.Account;
 import com.example.meeting.data.model.Alarm;
+import com.example.meeting.data.model.Calendar;
+
 
 import java.util.List;
 
@@ -44,7 +46,22 @@ public class AppDataManger implements DBHelper {
     }
 
     @Override
-    public Completable deleteAlarm(Long id) {
-        return mAppDatabase.alarmDao().delete(id);
+    public Completable deleteAlarm() {
+        return mAppDatabase.alarmDao().delete();
+    }
+
+    @Override
+    public Single<List<Calendar>> getMonthSchedulers(String uid, String rootKey) {
+        return Single.fromCallable(() -> mAppDatabase.calendarDao().loadMonthSchedulers(uid, rootKey));
+    }
+
+    @Override
+    public Completable insertScheduler(Calendar calendar) {
+        return mAppDatabase.calendarDao().insert(calendar);
+    }
+
+    @Override
+    public Completable deleteScheduler() {
+        return mAppDatabase.calendarDao().delete();
     }
 }

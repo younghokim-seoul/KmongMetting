@@ -1,6 +1,28 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+
+
+    signingConfigs {
+        project_debug {
+            storeFile file(keystoreProperties['storeFileDebug'])
+            storePassword keystoreProperties['storePasswordDebug']
+            keyAlias keystoreProperties['keyAliasDebug']
+            keyPassword keystoreProperties['keyPasswordDebug']
+        }
+        project_release {
+            storeFile file(keystoreProperties['storeFileRelease'])
+            storePassword keystoreProperties['storePasswordRelease']
+            keyAlias keystoreProperties['keyAliasRelease']
+            keyPassword keystoreProperties['keyPasswordRelease']
+        }
+    }
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -15,9 +37,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            signingConfig signingConfigs.project_debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.project_release
+
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.all {
+                output ->
+                    def date = new Date();
+                    def formattedDate = date.format('yyyy-MM-dd')
+                    outputFileName = formattedDate + "-" + variant.buildType.name + "-" + defaultConfig.versionName + "(" + defaultConfig.versionCode + ").apk"
+            }
         }
     }
 
@@ -69,7 +105,7 @@ dependencies {
     //Firebase
     implementation 'com.google.firebase:firebase-database:19.3.0'
     implementation 'com.google.firebase:firebase-auth:19.3.1'
-
+    implementation 'com.google.firebase:firebase-messaging:20.2.0'
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
@@ -77,4 +113,9 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.12'
 
     implementation project(path: ':library')
+
+    implementation 'com.karumi:dexter:5.0.0'
+    implementation 'com.android.volley:volley:1.1.0'
+
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

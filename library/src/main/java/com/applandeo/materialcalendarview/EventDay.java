@@ -26,6 +26,7 @@ public class EventDay {
     private int mLabelColor;
     private boolean mIsDisabled;
     private boolean isSetScheduler;
+    private boolean isCommon;
 
     /**
      * @param day Calendar object which represents a date of the event
@@ -72,11 +73,12 @@ public class EventDay {
         mLabelColor = labelColor;
     }
 
-    public EventDay(Calendar day, String title) {
+    public EventDay(Calendar day, String title,boolean is) {
         DateUtils.setMidnight(day);
         mDay = day;
         mTitle = title;
         isSetScheduler = true;
+        isCommon = is;
     }
     /**
      * @param day        Calendar object which represents a date of the event
@@ -135,5 +137,9 @@ public class EventDay {
 
     public boolean isSetScheduler() {
         return isSetScheduler;
+    }
+
+    public boolean isCommon() {
+        return isCommon;
     }
 }
